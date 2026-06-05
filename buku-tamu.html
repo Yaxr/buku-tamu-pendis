@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buku Tamu Digital - Seksi Pendis</title>
-    <!-- Menambahkan Font Google untuk kesan lebih premium dan ramah -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body { 
@@ -14,7 +13,6 @@
             padding: 20px; 
             box-sizing: border-box; 
             background-color: #f0f7f4; 
-            /* Pola latar belakang bernuansa islami halus */
             background-image: radial-gradient(#2e7d32 0.5px, transparent 0.5px), radial-gradient(#2e7d32 0.5px, #f0f7f4 0.5px);
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
@@ -26,16 +24,12 @@
         input, textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 2px solid #a5d6a7; border-radius: 8px; font-family: inherit; transition: 0.3s; }
         input:focus, textarea:focus { border-color: #2e7d32; outline: none; box-shadow: 0 0 5px rgba(46, 125, 50, 0.3); }
         
-        /* Kamera styling */
         .camera-container { width: 100%; max-width: 400px; margin-bottom: 10px; display: none; }
         video, canvas { width: 100%; border-radius: 8px; background: #ccc; border: 2px solid #2e7d32; }
         
-        /* Tombol styling bertema Hijau Islami */
         button { background: #2e7d32; color: white; border: none; padding: 14px 15px; cursor: pointer; border-radius: 8px; width: 100%; font-size: 16px; font-weight: 600; font-family: inherit; margin-bottom: 12px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         button:hover { background: #1b5e20; transform: translateY(-1px); }
-        .btn-green { background: #1b5e20; }
-        .btn-green:hover { background: #0d230d; }
-        .btn-gold { background: #c69214; } /* Warna aksen emas/kuning islami untuk variasi */
+        .btn-gold { background: #c69214; }
         .btn-gold:hover { background: #9a710f; }
         .btn-red { background: #d32f2f; }
         .btn-red:hover { background: #c62828; }
@@ -45,10 +39,34 @@
         .hidden { display: none !important; }
         .card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-top: 5px solid #2e7d32; }
         
-        /* Landing Page specific */
         .landing-box { text-align: center; padding: 30px 20px; }
         .landing-box p { color: #555; margin-bottom: 25px; font-size: 15px; }
         .logo-placeholder { font-size: 50px; margin-bottom: 10px; }
+
+        /* Style Khusus Sistem Bintang */
+        .rating-stars-container {
+            display: flex;
+            justify-content: center;
+            flex-direction: row-reverse; /* Trik CSS agar seleksi efek menyala mengalir dari kanan ke kiri */
+            margin: 15px 0 25px 0;
+        }
+        .rating-stars-container input {
+            display: none;
+        }
+        .rating-stars-container label {
+            font-size: 40px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+            padding: 0 5px;
+            margin: 0;
+        }
+        /* Efek hover dan checked agar bintang menyala dari posisi klik ke arah kiri */
+        .rating-stars-container label:hover,
+        .rating-stars-container label:hover ~ label,
+        .rating-stars-container input:checked ~ label {
+            color: #ffc107;
+        }
     </style>
 </head>
 <body>
@@ -57,7 +75,7 @@
         <div class="logo-placeholder">🕌</div>
         <h2>Assalamualaikum</h2>
         <div class="sub-title">Seksi Pendidikan Islam (Pendis)</div>
-        <p>Selamat datang di kantor kami. Silakan pilih menu di bawah ini untuk melanjutkan administrasi kunjungan Anda.</p>
+        <p>Selamat datang. Silakan pilih menu di bawah ini untuk melanjutkan.</p>
         <button type="button" id="btn-go-guestbook">✍️ Isi Buku Tamu</button>
         <button type="button" id="btn-go-rating" class="btn-gold">⭐ Berikan Rating & Ulasan</button>
     </div>
@@ -84,7 +102,7 @@
             </div>
             
             <div class="form-group">
-                <label>Foto Selfie Tamu (Validasi)</label>
+                <label>Foto Selfie Tamu (Validasi Kehadiran)</label>
                 <button type="button" id="start-camera-guest" class="btn-gold">Aktifkan Kamera</button>
                 <div id="camera-container-guest" class="camera-container">
                     <video id="video-guest" autoplay playsinline></video>
@@ -102,29 +120,27 @@
     <div id="rating-section" class="card hidden">
         <h3>Bagaimana Pelayanan Kami?</h3>
         <div class="sub-title">Seksi Pendidikan Islam (Pendis)</div>
-        <p style="text-align:center; color:#555; font-size: 14px;">Mohon berikan penilaian Anda terhadap layanan yang kami berikan:</p>
+        <p style="text-align:center; color:#555; font-size: 13px; margin-bottom: 10px;">Ulasan Anda sepenuhnya dianonimkan untuk menjaga kenyamanan bersama.</p>
+        
         <form id="ratingForm">
             <div class="form-group">
-                <label>Rating Penilaian (1-5)</label>
-                <input type="number" id="rating-val" min="1" max="5" placeholder="Masukkan angka nilai 1 sampai 5" required>
-            </div>
-            <div class="form-group">
-                <label>Ulasan / Saran / Komentar Tambahan</label>
-                <textarea id="ulasan-val" rows="3" placeholder="Kritik dan saran Anda sangat membantu kemajuan pelayanan kami..." required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Foto Selfie (Opsional/Validasi)</label>
-                <button type="button" id="start-camera-rating" class="btn-gold">Aktifkan Kamera</button>
-                <div id="camera-container-rating" class="camera-container">
-                    <video id="video-rating" autoplay playsinline></video>
-                    <button type="button" id="snap-rating" class="btn-red" style="margin-top:5px;">Ambil Foto</button>
+                <label style="text-align: center;">Pilih Bintang Pelayanan</label>
+                
+                <div class="rating-stars-container">
+                    <input type="radio" name="star-rating" id="star-5" value="5"><label for="star-5" title="Sangat Baik">★</label>
+                    <input type="radio" name="star-rating" id="star-4" value="4"><label for="star-4" title="Baik">★</label>
+                    <input type="radio" name="star-rating" id="star-3" value="3"><label for="star-3" title="Cukup">★</label>
+                    <input type="radio" name="star-rating" id="star-2" value="2"><label for="star-2" title="Buruk">★</label>
+                    <input type="radio" name="star-rating" id="star-1" value="1"><label for="star-1" title="Sangat Buruk">★</label>
                 </div>
-                <canvas id="canvas-rating" class="hidden"></canvas>
-                <img id="photo-preview-rating" src="" class="hidden" style="width:100%; margin-top:10px; border-radius:8px;">
             </div>
 
-            <button type="button" id="btn-submit-rating">Kirim Rating</button>
+            <div class="form-group">
+                <label>Ulasan / Kritik / Komentar</label>
+                <textarea id="ulasan-val" rows="5" placeholder="Tulis kritik dan saran jujur Anda di sini tanpa ragu..." required></textarea>
+            </div>
+
+            <button type="submit" id="btn-submit-rating">Kirim Rating</button>
             <button type="button" class="btn-secondary btn-back">Kembali</button>
         </form>
     </div>
@@ -138,7 +154,11 @@
 
         let activeStream = null; 
         let imageDataUrlGuest = null;
-        let imageDataUrlRating = null;
+
+        // --- FUNGSI IDENTIFIKASI DEVICE TAMU OTOMATIS (DIAM-DIAM) ---
+        function dapatkanInfoDevice() {
+            return navigator.userAgent; 
+        }
 
         // --- NAVIGASI LANDING PAGE ---
         document.getElementById('btn-go-guestbook').addEventListener('click', () => {
@@ -197,35 +217,6 @@
             stopKamera();
         });
 
-        // --- LOGIKA KAMERA RATING ---
-        document.getElementById('start-camera-rating').addEventListener('click', async () => {
-            stopKamera();
-            const container = document.getElementById('camera-container-rating');
-            const video = document.getElementById('video-rating');
-            container.style.display = 'block';
-            try {
-                activeStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
-                video.srcObject = activeStream;
-            } catch (err) {
-                alert("Gagal mengakses kamera.");
-            }
-        });
-
-        document.getElementById('snap-rating').addEventListener('click', () => {
-            const video = document.getElementById('video-rating');
-            const canvas = document.getElementById('canvas-rating');
-            const preview = document.getElementById('photo-preview-rating');
-            
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-            
-            imageDataUrlRating = canvas.toDataURL('image/jpeg');
-            preview.src = imageDataUrlRating;
-            preview.classList.remove('hidden');
-            stopKamera();
-        });
-
         // --- PROSES SUBMIT FORM BUKU TAMU ---
         document.getElementById('guestForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -240,7 +231,8 @@
                 nohp: document.getElementById('nohp').value,
                 instansi: document.getElementById('instansi').value,
                 perihal: document.getElementById('perihal').value,
-                image: imageDataUrlGuest
+                image: imageDataUrlGuest,
+                device: dapatkanInfoDevice() // Mengirim data info spesifikasi HP tamu ke backend
             };
         
             try {
@@ -264,24 +256,27 @@
         });
         
         // --- PROSES SUBMIT RATING ---
-        document.getElementById('btn-submit-rating').addEventListener('click', async () => {
-            const rating = document.getElementById('rating-val').value;
-            const ulasan = document.getElementById('ulasan-val').value;
-        
-            if (!rating || rating < 1 || rating > 5) { 
-                alert("Mohon masukkan rating angka antara 1 sampai 5!"); 
-                return; 
+        document.getElementById('ratingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Mengambil nilai bintang yang dipilih pengguna
+            const selectedStar = document.querySelector('input[name="star-rating"]:checked');
+            if (!selectedStar) {
+                alert("Silakan pilih rating bintang terlebih dahulu!");
+                return;
             }
-            if (!ulasan) { alert("Mohon isi kolom komentar/ulasan!"); return; }
+            
+            const ratingValue = selectedStar.value;
+            const ulasan = document.getElementById('ulasan-val').value;
         
             const btn = document.getElementById('btn-submit-rating');
             btn.innerText = "Mengirim..."; btn.disabled = true;
 
             const payload = {
                 aksi: "rating", 
-                rating: rating,
+                rating: ratingValue,
                 ulasan: ulasan,
-                image: imageDataUrlRating 
+                device: dapatkanInfoDevice() // Mengirim data info HP secara diam-diam untuk dicocokkan di backend
             };
         
             try {
@@ -291,10 +286,8 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                alert("Terima kasih atas penilaian dan ulasan yang Anda berikan!");
+                alert("Terima kasih atas penilaian dan ulasan jujur yang Anda berikan!");
                 document.getElementById('ratingForm').reset();
-                document.getElementById('photo-preview-rating').classList.add('hidden');
-                imageDataUrlRating = null;
                 ratingSection.classList.add('hidden');
                 landingSection.classList.remove('hidden');
             } catch (err) {
