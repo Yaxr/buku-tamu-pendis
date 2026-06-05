@@ -48,9 +48,9 @@
         </form>
     </div>
 
-    <div id="rating-section" class="hidden class rating-box">
+    <div id="rating-section" class="hidden rating-box">
         <h3>Bagaimana Kunjungan Anda?</h3>
-        <p>Halo <span id="visitor-name"></span>, Anda berkunjung sekitar 6 jam yang lalu. Mohon berikan penilaian Anda:</p>
+        <p>Halo <span id="visitor-name"></span>, Terima kasih telah berkunjung. Mohon berikan penilaian Anda:</p>
         <div class="form-group">
             <label>Rating (1-5)</label>
             <input type="number" id="rating-val" min="1" max="5" placeholder="Contoh: 5" required>
@@ -63,109 +63,123 @@
     </div>
 
     <script>
-                const WEB_APP_URL = "URL_WEB_APP_APPS_SCRIPT_BARU_MU";
+        // PENTING: Ganti dengan URL Web App dari Google Apps Script Anda yang baru
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxHtRs9DhfU479AeGNEvqN5L-2Va8QhTO-yF-wL1Jo4AbkC8eDPnVciykEcAbS9_3Wq/exec";
+        
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const photoPreview = document.getElementById('photo-preview');
+        const cameraContainer = document.getElementById('camera-container');
+        let imageDataUrl = null;
+        
+        // Cek URL Parameter saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const page = urlParams.get('page');
+            const row = urlParams.get('row');
+            const name = urlParams.get('name');
+        
+            // Jika masuk lewat link email rating (?page=rating)
+            if (page === 'rating' && row) {
+                document.getElementById('guestbook-section').classList.add('hidden');
+                document.getElementById('rating-section').classList.remove('hidden');
+                document.getElementById('visitor-name').innerText = decodeURIComponent(name);
                 
-                const video = document.getElementById('video');
-                const canvas = document.getElementById('canvas');
-                const photoPreview = document.getElementById('photo-preview');
-                const cameraContainer = document.getElementById('camera-container');
-                let imageDataUrl = null;
-                
-                // Cek URL Parameter saat halaman dimuat
-                window.addEventListener('DOMContentLoaded', () => {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const page = urlParams.get('page');
-                    const row = urlParams.get('row');
-                    const name = urlParams.get('name');
-                
-                    // Jika masuk lewat link email rating (?page=rating)
-                    if (page === 'rating' && row) {
-                        document.getElementById('guestbook-section').classList.add('hidden');
-                        document.getElementById('rating-section').classList.remove('hidden');
-                        document.getElementById('visitor-name').innerText = decodeURIComponent(name);
-                        
-                        // Simpan baris data ke element tersembunyi untuk referensi submit
-                        document.getElementById('btn-submit-rating').setAttribute('data-row', row);
-                    }
+                // Simpan baris data ke elemen tombol ulasan untuk referensi submit
+                document.getElementById('btn-submit-rating').setAttribute('data-row', row);
+            }
+        });
+        
+        // Alur Hidupkan Kamera
+        document.getElementById('start-camera').addEventListener('click', async () => {
+            cameraContainer.style.display = 'block';
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+                video.srcObject = stream;
+            } catch (err) {
+                alert("Gagal mengakses kamera. Pastikan memberikan izin akses kamera.");
+                console.error(err);
+            }
+        });
+        
+        // Alur Ambil Foto (Snapshot)
+        document.getElementById('snap').addEventListener('click', () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            
+            imageDataUrl = canvas.toDataURL('image/jpeg');
+            photoPreview.src = imageDataUrl;
+            photoPreview.classList.remove('hidden');
+            
+            const stream = video.srcObject;
+            if(stream) stream.getTracks().forEach(track => track.stop());
+            cameraContainer.style.style.display = 'none';
+        });
+        
+        // Submit Form Buku Tamu Utama (POST)
+        document.getElementById('guestForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!imageDataUrl) { alert("Silakan ambil foto selfie terlebih dahulu!"); return; }
+        
+            const btn = document.getElementById('btn-submit');
+            btn.innerText = "Mengirim..."; btn.disabled = true;
+        
+            const payload = {
+                nama: document.getElementById('nama').value,
+                email: document.getElementById('email').value,
+                pesan: document.getElementById('pesan').value,
+                image: imageDataUrl
+            };
+        
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Mode no-cors wajib untuk redirect Google Apps Script
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
-                
-                // --- CODE KAMERA & SUBMIT FORM BUKU TAMU SAMA SEPERTI SEBELUMNYA ---
-                document.getElementById('start-camera').addEventListener('click', async () => {
-                    cameraContainer.style.display = 'block';
-                    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
-                    video.srcObject = stream;
-                });
-                
-                document.getElementById('snap').addEventListener('click', () => {
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                    canvas.getContext('2d').drawImage(video, 0, 0);
-                    imageDataUrl = canvas.toDataURL('image/jpeg');
-                    photoPreview.src = imageDataUrl;
-                    photoPreview.classList.remove('hidden');
-                    const stream = video.srcObject;
-                    if(stream) stream.getTracks().forEach(track => track.stop());
-                    cameraContainer.style.display = 'none';
-                });
-                
-                document.getElementById('guestForm').addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    if (!imageDataUrl) { alert("Silakan ambil foto selfie terlebih dahulu!"); return; }
-                
-                    const btn = document.getElementById('btn-submit');
-                    btn.innerText = "Mengirim..."; btn.disabled = true;
-                
-                    const payload = {
-                        nama: document.getElementById('nama').value,
-                        email: document.getElementById('email').value,
-                        pesan: document.getElementById('pesan').value,
-                        image: imageDataUrl
-                    };
-                
-                    try {
-                        await fetch(WEB_APP_URL, {
-                            method: 'POST',
-                            mode: 'no-cors',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                        alert("Terima kasih sudah mengisi buku tamu! Email berisi link rating akan dikirim dalam 6 jam.");
-                        document.getElementById('guestForm').reset();
-                        photoPreview.classList.add('hidden');
-                        imageDataUrl = null;
-                    } catch (err) {
-                        console.error(err);
-                    } finally {
-                        btn.innerText = "Kirim Kehadiran"; btn.disabled = false;
-                    }
-                });
-                
-                // --- SUBMIT RATING BARU (KIRIM DATA KE GET HANDLER APPS SCRIPT) ---
-                document.getElementById('btn-submit-rating').addEventListener('click', async () => {
-                    const row = document.getElementById('btn-submit-rating').getAttribute('data-row');
-                    const rating = document.getElementById('rating-val').value;
-                    const ulasan = document.getElementById('ulasan-val').value;
-                
-                    if (!rating) { alert("Mohon masukkan rating angka 1-5!"); return; }
-                
-                    const btn = document.getElementById('btn-submit-rating');
-                    btn.innerText = "Mengirim..."; btn.disabled = true;
-                
-                    // Kirim menggunakan metode GET (Query Parameter) sesuai handler `doGet` di Apps Script
-                    const finalUrl = `${WEB_APP_URL}?row=${row}&rating=${rating}&ulasan=${encodeURIComponent(ulasan)}`;
-                
-                    try {
-                        await fetch(finalUrl, { method: 'GET' });
-                        alert("Terima kasih atas penilaian Anda!");
-                        // Redirect balik ke form kosong utama
-                        window.location.href = window.location.origin + window.location.pathname;
-                    } catch (err) {
-                        console.error(err);
-                        alert("Gagal mengirim rating.");
-                    } finally {
-                        btn.innerText = "Kirim Rating"; btn.disabled = false;
-                    }
-                });
+                alert("Terima kasih sudah mengisi buku tamu! Email berisi link rating akan dikirim dalam 6 jam.");
+                document.getElementById('guestForm').reset();
+                photoPreview.classList.add('hidden');
+                imageDataUrl = null;
+            } catch (err) {
+                console.error(err);
+                alert("Terjadi masalah saat mengirim data.");
+            } finally {
+                btn.innerText = "Kirim Kehadiran"; btn.disabled = false;
+            }
+        });
+        
+        // Submit Ulasan/Rating (GET)
+        document.getElementById('btn-submit-rating').addEventListener('click', async () => {
+            const row = document.getElementById('btn-submit-rating').getAttribute('data-row');
+            const rating = document.getElementById('rating-val').value;
+            const ulasan = document.getElementById('ulasan-val').value;
+        
+            if (!rating || rating < 1 || rating > 5) { 
+                alert("Mohon masukkan rating angka antara 1 sampai 5!"); 
+                return; 
+            }
+        
+            const btn = document.getElementById('btn-submit-rating');
+            btn.innerText = "Mengirim..."; btn.disabled = true;
+        
+            // Memanggil doGet handler di Apps Script berdasarkan baris data (row) yang sesuai
+            const finalUrl = `${WEB_APP_URL}?row=${row}&rating=${rating}&ulasan=${encodeURIComponent(ulasan)}`;
+        
+            try {
+                await fetch(finalUrl, { method: 'GET', mode: 'no-cors' });
+                alert("Terima kasih atas penilaian Anda!");
+                // Kembalikan ke halaman buku tamu utama yang bersih
+                window.location.href = window.location.origin + window.location.pathname;
+            } catch (err) {
+                console.error(err);
+                alert("Gagal mengirim rating.");
+            } finally {
+                btn.innerText = "Kirim Rating"; btn.disabled = false;
+            }
+        });
     </script>
 </body>
 </html>
