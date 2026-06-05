@@ -3,157 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buku Tamu Digital</title>
+    <title>Buku Tamu Digital - Seksi Pendis</title>
+    <!-- Menambahkan Font Google untuk kesan lebih premium dan ramah -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; max-width: 500px; margin: 20px auto; padding: 20px; box-sizing: border-box; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            max-width: 500px; 
+            margin: 20px auto; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            background-color: #f0f7f4; 
+            /* Pola latar belakang bernuansa islami halus */
+            background-image: radial-gradient(#2e7d32 0.5px, transparent 0.5px), radial-gradient(#2e7d32 0.5px, #f0f7f4 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+        h2, h3 { text-align: center; color: #1b5e20; font-weight: 700; margin-top: 10px; }
+        .sub-title { text-align: center; color: #4e7055; font-size: 14px; margin-top: -10px; margin-bottom: 20px; font-weight: 600; }
         .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, textarea { width: 100%; padding: 8px; box-sizing: border-box; }
-        #camera-container { width: 100%; max-width: 400px; margin-bottom: 10px; display: none; }
-        video, canvas { width: 100%; border-radius: 8px; background: #ccc; }
-        button { background: #007bff; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 5px; width: 100%; }
-        button:hover { background: #0056b3; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; color: #2e7d32; font-size: 14px; }
+        input, textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 2px solid #a5d6a7; border-radius: 8px; font-family: inherit; transition: 0.3s; }
+        input:focus, textarea:focus { border-color: #2e7d32; outline: none; box-shadow: 0 0 5px rgba(46, 125, 50, 0.3); }
+        
+        /* Kamera styling */
+        .camera-container { width: 100%; max-width: 400px; margin-bottom: 10px; display: none; }
+        video, canvas { width: 100%; border-radius: 8px; background: #ccc; border: 2px solid #2e7d32; }
+        
+        /* Tombol styling bertema Hijau Islami */
+        button { background: #2e7d32; color: white; border: none; padding: 14px 15px; cursor: pointer; border-radius: 8px; width: 100%; font-size: 16px; font-weight: 600; font-family: inherit; margin-bottom: 12px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        button:hover { background: #1b5e20; transform: translateY(-1px); }
+        .btn-green { background: #1b5e20; }
+        .btn-green:hover { background: #0d230d; }
+        .btn-gold { background: #c69214; } /* Warna aksen emas/kuning islami untuk variasi */
+        .btn-gold:hover { background: #9a710f; }
+        .btn-red { background: #d32f2f; }
+        .btn-red:hover { background: #c62828; }
+        .btn-secondary { background: #78909c; }
+        .btn-secondary:hover { background: #607d8b; }
+
         .hidden { display: none !important; }
-        .rating-box { background: #f8f9fa; padding: 15px; border: 1px solid #ddd; border-radius: 8px; text-align: center; }
+        .card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-top: 5px solid #2e7d32; }
+        
+        /* Landing Page specific */
+        .landing-box { text-align: center; padding: 30px 20px; }
+        .landing-box p { color: #555; margin-bottom: 25px; font-size: 15px; }
+        .logo-placeholder { font-size: 50px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="guestbook-section">
-        <h2>Buku Tamu</h2>
+    <div id="landing-section" class="card landing-box">
+        <div class="logo-placeholder">🕌</div>
+        <h2>Assalamualaikum</h2>
+        <div class="sub-title">Seksi Pendidikan Islam (Pendis)</div>
+        <p>Selamat datang di kantor kami. Silakan pilih menu di bawah ini untuk melanjutkan administrasi kunjungan Anda.</p>
+        <button type="button" id="btn-go-guestbook">✍️ Isi Buku Tamu</button>
+        <button type="button" id="btn-go-rating" class="btn-gold">⭐ Berikan Rating & Ulasan</button>
+    </div>
+
+    <div id="guestbook-section" class="card hidden">
+        <h2>Isi Buku Tamu</h2>
+        <div class="sub-title">Seksi Pendidikan Islam (Pendis)</div>
         <form id="guestForm">
             <div class="form-group">
                 <label>Nama Lengkap</label>
-                <input type="text" id="nama" required>
+                <input type="text" id="nama" placeholder="Masukkan nama lengkap Anda" required>
             </div>
             <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="email" required>
+                <label>Nomor HP / WhatsApp</label>
+                <input type="tel" id="nohp" placeholder="Contoh: 08123456789" required>
             </div>
             <div class="form-group">
-                <label>Pesan / Keperluan</label>
-                <textarea id="pesan" rows="3" required></textarea>
+                <label>Asal Instansi / Sekolah / Madrasah</label>
+                <input type="text" id="instansi" placeholder="Contoh: MIN 1 / Umum" required>
             </div>
             <div class="form-group">
-                <label>Foto Selfie</label>
-                <button type="button" id="start-camera" style="background:#28a745;">Aktifkan Kamera</button>
-                <div id="camera-container">
-                    <video id="video" autoplay playsinline></video>
-                    <button type="button" id="snap" style="margin-top:5px; background:#dc3545;">Ambil Foto</button>
+                <label>Perihal / Keperluan Kunjungan</label>
+                <textarea id="perihal" rows="3" placeholder="Tuliskan tujuan keperluan Anda..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Foto Selfie Tamu (Validasi)</label>
+                <button type="button" id="start-camera-guest" class="btn-gold">Aktifkan Kamera</button>
+                <div id="camera-container-guest" class="camera-container">
+                    <video id="video-guest" autoplay playsinline></video>
+                    <button type="button" id="snap-guest" class="btn-red" style="margin-top:5px;">Ambil Foto</button>
                 </div>
-                <canvas id="canvas" class="hidden"></canvas>
-                <img id="photo-preview" src="" class="hidden" style="width:100%; margin-top:10px; border-radius:8px;">
+                <canvas id="canvas-guest" class="hidden"></canvas>
+                <img id="photo-preview-guest" src="" class="hidden" style="width:100%; margin-top:10px; border-radius:8px;">
             </div>
-            <button type="submit" id="btn-submit">Kirim Kehadiran</button>
+
+            <button type="submit" id="btn-submit-guest">Kirim Kehadiran</button>
+            <button type="button" class="btn-secondary btn-back">Kembali</button>
         </form>
     </div>
 
-    <div id="rating-section" class="hidden rating-box">
-        <h3>Bagaimana Kunjungan Anda?</h3>
-        <p>Halo <span id="visitor-name"></span>, Terima kasih telah berkunjung. Mohon berikan penilaian Anda:</p>
-        <div class="form-group">
-            <label>Rating (1-5)</label>
-            <input type="number" id="rating-val" min="1" max="5" placeholder="Contoh: 5" required>
-        </div>
-        <div class="form-group">
-            <label>Ulasan Tambahan</label>
-            <textarea id="ulasan-val" rows="2"></textarea>
-        </div>
-        <button type="button" id="btn-submit-rating">Kirim Rating</button>
+    <div id="rating-section" class="card hidden">
+        <h3>Bagaimana Pelayanan Kami?</h3>
+        <div class="sub-title">Seksi Pendidikan Islam (Pendis)</div>
+        <p style="text-align:center; color:#555; font-size: 14px;">Mohon berikan penilaian Anda terhadap layanan yang kami berikan:</p>
+        <form id="ratingForm">
+            <div class="form-group">
+                <label>Rating Penilaian (1-5)</label>
+                <input type="number" id="rating-val" min="1" max="5" placeholder="Masukkan angka nilai 1 sampai 5" required>
+            </div>
+            <div class="form-group">
+                <label>Ulasan / Saran / Komentar Tambahan</label>
+                <textarea id="ulasan-val" rows="3" placeholder="Kritik dan saran Anda sangat membantu kemajuan pelayanan kami..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Foto Selfie (Opsional/Validasi)</label>
+                <button type="button" id="start-camera-rating" class="btn-gold">Aktifkan Kamera</button>
+                <div id="camera-container-rating" class="camera-container">
+                    <video id="video-rating" autoplay playsinline></video>
+                    <button type="button" id="snap-rating" class="btn-red" style="margin-top:5px;">Ambil Foto</button>
+                </div>
+                <canvas id="canvas-rating" class="hidden"></canvas>
+                <img id="photo-preview-rating" src="" class="hidden" style="width:100%; margin-top:10px; border-radius:8px;">
+            </div>
+
+            <button type="button" id="btn-submit-rating">Kirim Rating</button>
+            <button type="button" class="btn-secondary btn-back">Kembali</button>
+        </form>
     </div>
 
     <script>
-        // PENTING: Ganti dengan URL Web App dari Google Apps Script Anda yang baru
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxHtRs9DhfU479AeGNEvqN5L-2Va8QhTO-yF-wL1Jo4AbkC8eDPnVciykEcAbS9_3Wq/exec";
         
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const photoPreview = document.getElementById('photo-preview');
-        const cameraContainer = document.getElementById('camera-container');
-        let imageDataUrl = null;
-        
-        // Cek URL Parameter saat halaman dimuat
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const page = urlParams.get('page');
-            const row = urlParams.get('row');
-            const name = urlParams.get('name');
-        
-            // Jika masuk lewat link email rating (?page=rating)
-            if (page === 'rating' && row) {
-                document.getElementById('guestbook-section').classList.add('hidden');
-                document.getElementById('rating-section').classList.remove('hidden');
-                document.getElementById('visitor-name').innerText = decodeURIComponent(name);
-                
-                // Simpan baris data ke elemen tombol ulasan untuk referensi submit
-                document.getElementById('btn-submit-rating').setAttribute('data-row', row);
-            }
+        const landingSection = document.getElementById('landing-section');
+        const guestbookSection = document.getElementById('guestbook-section');
+        const ratingSection = document.getElementById('rating-section');
+
+        let activeStream = null; 
+        let imageDataUrlGuest = null;
+        let imageDataUrlRating = null;
+
+        // --- NAVIGASI LANDING PAGE ---
+        document.getElementById('btn-go-guestbook').addEventListener('click', () => {
+            landingSection.classList.add('hidden');
+            guestbookSection.classList.remove('hidden');
         });
-        
-        // Alur Hidupkan Kamera
-        document.getElementById('start-camera').addEventListener('click', async () => {
-            cameraContainer.style.display = 'block';
+
+        document.getElementById('btn-go-rating').addEventListener('click', () => {
+            landingSection.classList.add('hidden');
+            ratingSection.classList.remove('hidden');
+        });
+
+        document.querySelectorAll('.btn-back').forEach(btn => {
+            btn.addEventListener('click', () => {
+                stopKamera()
+                guestbookSection.classList.add('hidden');
+                ratingSection.classList.add('hidden');
+                landingSection.classList.remove('hidden');
+            });
+        });
+
+        function stopKamera() {
+            if (activeStream) {
+                activeStream.getTracks().forEach(track => track.stop());
+                activeStream = null;
+            }
+            document.querySelectorAll('.camera-container').forEach(el => el.style.display = 'none');
+        }
+
+        // --- LOGIKA KAMERA BUKU TAMU ---
+        document.getElementById('start-camera-guest').addEventListener('click', async () => {
+            stopKamera();
+            const container = document.getElementById('camera-container-guest');
+            const video = document.getElementById('video-guest');
+            container.style.display = 'block';
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
-                video.srcObject = stream;
+                activeStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+                video.srcObject = activeStream;
             } catch (err) {
-                alert("Gagal mengakses kamera. Pastikan memberikan izin akses kamera.");
-                console.error(err);
+                alert("Gagal mengakses kamera.");
             }
         });
-        
-        // Alur Ambil Foto (Snapshot)
-        document.getElementById('snap').addEventListener('click', () => {
+
+        document.getElementById('snap-guest').addEventListener('click', () => {
+            const video = document.getElementById('video-guest');
+            const canvas = document.getElementById('canvas-guest');
+            const preview = document.getElementById('photo-preview-guest');
+            
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0);
             
-            imageDataUrl = canvas.toDataURL('image/jpeg');
-            photoPreview.src = imageDataUrl;
-            photoPreview.classList.remove('hidden');
-            
-            const stream = video.srcObject;
-            if(stream) stream.getTracks().forEach(track => track.stop());
-            cameraContainer.style.style.display = 'none';
+            imageDataUrlGuest = canvas.toDataURL('image/jpeg');
+            preview.src = imageDataUrlGuest;
+            preview.classList.remove('hidden');
+            stopKamera();
         });
-        
-        // Submit Form Buku Tamu Utama (POST)
+
+        // --- LOGIKA KAMERA RATING ---
+        document.getElementById('start-camera-rating').addEventListener('click', async () => {
+            stopKamera();
+            const container = document.getElementById('camera-container-rating');
+            const video = document.getElementById('video-rating');
+            container.style.display = 'block';
+            try {
+                activeStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+                video.srcObject = activeStream;
+            } catch (err) {
+                alert("Gagal mengakses kamera.");
+            }
+        });
+
+        document.getElementById('snap-rating').addEventListener('click', () => {
+            const video = document.getElementById('video-rating');
+            const canvas = document.getElementById('canvas-rating');
+            const preview = document.getElementById('photo-preview-rating');
+            
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            
+            imageDataUrlRating = canvas.toDataURL('image/jpeg');
+            preview.src = imageDataUrlRating;
+            preview.classList.remove('hidden');
+            stopKamera();
+        });
+
+        // --- PROSES SUBMIT FORM BUKU TAMU ---
         document.getElementById('guestForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!imageDataUrl) { alert("Silakan ambil foto selfie terlebih dahulu!"); return; }
+            if (!imageDataUrlGuest) { alert("Silakan ambil foto selfie terlebih dahulu!"); return; }
         
-            const btn = document.getElementById('btn-submit');
+            const btn = document.getElementById('btn-submit-guest');
             btn.innerText = "Mengirim..."; btn.disabled = true;
         
             const payload = {
+                aksi: "buku_tamu", 
                 nama: document.getElementById('nama').value,
-                email: document.getElementById('email').value,
-                pesan: document.getElementById('pesan').value,
-                image: imageDataUrl
+                nohp: document.getElementById('nohp').value,
+                instansi: document.getElementById('instansi').value,
+                perihal: document.getElementById('perihal').value,
+                image: imageDataUrlGuest
             };
         
             try {
                 await fetch(WEB_APP_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Mode no-cors wajib untuk redirect Google Apps Script
+                    mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                alert("Terima kasih sudah mengisi buku tamu! Email berisi link rating akan dikirim dalam 6 jam.");
+                alert("Terima kasih, data kunjungan Anda telah tersimpan. Syukron!");
                 document.getElementById('guestForm').reset();
-                photoPreview.classList.add('hidden');
-                imageDataUrl = null;
+                document.getElementById('photo-preview-guest').classList.add('hidden');
+                imageDataUrlGuest = null;
+                guestbookSection.classList.add('hidden');
+                landingSection.classList.remove('hidden');
             } catch (err) {
-                console.error(err);
                 alert("Terjadi masalah saat mengirim data.");
             } finally {
                 btn.innerText = "Kirim Kehadiran"; btn.disabled = false;
             }
         });
         
-        // Submit Ulasan/Rating (GET)
+        // --- PROSES SUBMIT RATING ---
         document.getElementById('btn-submit-rating').addEventListener('click', async () => {
-            const row = document.getElementById('btn-submit-rating').getAttribute('data-row');
             const rating = document.getElementById('rating-val').value;
             const ulasan = document.getElementById('ulasan-val').value;
         
@@ -161,20 +272,32 @@
                 alert("Mohon masukkan rating angka antara 1 sampai 5!"); 
                 return; 
             }
+            if (!ulasan) { alert("Mohon isi kolom komentar/ulasan!"); return; }
         
             const btn = document.getElementById('btn-submit-rating');
             btn.innerText = "Mengirim..."; btn.disabled = true;
-        
-            // Memanggil doGet handler di Apps Script berdasarkan baris data (row) yang sesuai
-            const finalUrl = `${WEB_APP_URL}?row=${row}&rating=${rating}&ulasan=${encodeURIComponent(ulasan)}`;
+
+            const payload = {
+                aksi: "rating", 
+                rating: rating,
+                ulasan: ulasan,
+                image: imageDataUrlRating 
+            };
         
             try {
-                await fetch(finalUrl, { method: 'GET', mode: 'no-cors' });
-                alert("Terima kasih atas penilaian Anda!");
-                // Kembalikan ke halaman buku tamu utama yang bersih
-                window.location.href = window.location.origin + window.location.pathname;
+                await fetch(WEB_APP_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                alert("Terima kasih atas penilaian dan ulasan yang Anda berikan!");
+                document.getElementById('ratingForm').reset();
+                document.getElementById('photo-preview-rating').classList.add('hidden');
+                imageDataUrlRating = null;
+                ratingSection.classList.add('hidden');
+                landingSection.classList.remove('hidden');
             } catch (err) {
-                console.error(err);
                 alert("Gagal mengirim rating.");
             } finally {
                 btn.innerText = "Kirim Rating"; btn.disabled = false;
