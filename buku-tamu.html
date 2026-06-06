@@ -98,7 +98,7 @@
             </div>
             <div class="form-group">
                 <label>Alamat</label>
-                <textarea id="perihal" rows="3" placeholder="Tuliskan Alamat" required></textarea>
+                <textarea id="alamat" placeholder="Tuliskan Alamat" required></textarea>
             </div>
             <div class="form-group">
                 <label>Perihal / Keperluan Kunjungan</label>
@@ -234,6 +234,7 @@
                 nama: document.getElementById('nama').value,
                 nohp: document.getElementById('nohp').value,
                 instansi: document.getElementById('instansi').value,
+                alamat: document.getElementById('alamat'),
                 perihal: document.getElementById('perihal').value,
                 image: imageDataUrlGuest,
                 device: dapatkanInfoDevice() // Mengirim data info spesifikasi HP tamu ke backend
